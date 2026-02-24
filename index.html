@@ -1,20 +1,184 @@
-<html>
-<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist AI Chat</title>
     <script src="https://js.puter.com/v2/"></script>
-    <input type="text" id="userInput" placeholder="Type your message here...">
-    <button onclick="sendMessage()">Send</button>
-    <div id="response"></div>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+            overflow: hidden;
+        }
+
+        .output-container {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: #007aff;
+            color: white;
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            background-color: #e5e5ea;
+            color: #333;
+        }
+
+        .input-area {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-top: 1px solid #eee;
+            background-color: #fff;
+        }
+
+        textarea#inputField {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 18px;
+            resize: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            min-height: 20px;
+            max-height: 100px;
+        }
+
+        button#sendButton {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #007aff;
+            color: white;
+            border: none;
+            border-radius: 18px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button#sendButton:hover {
+            background-color: #005bbd;
+        }
+
+        .loading {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #007aff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="output-container" id="outputContainer">
+            <!-- Output messages will appear here -->
+        </div>
+        <div class="input-area">
+            <div class="loading" id="loadingCircle"></div>
+            <textarea id="inputField" placeholder="Type your message..." rows="1"></textarea>
+            <button id="sendButton">Send</button>
+        </div>
+    </div>
 
     <script>
-        function sendMessage() {
-            const userInput = document.getElementById('userInput').value;
-            if (!userInput) return;
+        const inputField = document.getElementById('inputField');
+        const loadingCircle = document.getElementById('loadingCircle');
+        const outputContainer = document.getElementById('outputContainer');
+        const sendButton = document.getElementById('sendButton');
 
-            puter.ai.chat(userInput, {
-                model: 'x-ai/grok-4-1-fast'
-            }).then(response => {
-                document.getElementById('response').innerHTML = response.message.content;
-            });
+        // Auto-resize textarea
+        inputField.addEventListener('input', () => {
+            inputField.style.height = 'auto';
+            inputField.style.height = inputField.scrollHeight + 'px';
+        });
+
+        // Send message on button click
+        sendButton.addEventListener('click', sendMessage);
+
+        // Send message on Enter key
+        inputField.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const messageText = inputField.value.trim();
+            if (messageText) {
+                addMessage(messageText, 'user-message');
+                inputField.value = '';
+                inputField.style.height = 'auto';
+                showLoading();
+
+                puter.ai.chat(messageText, {
+                    model: 'x-ai/grok-4-1-fast'
+                }).then(response => {
+                    hideLoading();
+                    addMessage(response.message.content, 'ai-message');
+                }).catch(error => {
+                    hideLoading();
+                    addMessage("Sorry, something went wrong. Please try again.", 'ai-message');
+                });
+            }
+        }
+
+        function showLoading() {
+            loadingCircle.style.display = 'block';
+        }
+
+        function hideLoading() {
+            loadingCircle.style.display = 'none';
+        }
+
+        function addMessage(text, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', type);
+            messageDiv.textContent = text;
+            outputContainer.appendChild(messageDiv);
+            outputContainer.scrollTop = outputContainer.scrollHeight;
         }
     </script>
 </body>
