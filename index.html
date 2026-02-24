@@ -232,14 +232,20 @@
                         model: selectedModel
                     });
 
+                    // Extract content, handling possible array format for models like Claude
+                    let aiContent = response.message.content;
+                    if (Array.isArray(aiContent)) {
+                        aiContent = aiContent.map(block => block.text || '').join('\n');
+                    }
+
                     // Add AI's response to history
                     conversationHistory.push({
                         role: "assistant",
-                        content: response.message.content
+                        content: aiContent
                     });
 
                     hideLoading();
-                    addMessage(response.message.content, 'ai-message');
+                    addMessage(aiContent, 'ai-message');
                 } catch (error) {
                     hideLoading();
                     addMessage("Sorry, something went wrong. Please try again.", 'ai-message');
