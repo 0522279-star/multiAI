@@ -2,7 +2,7 @@
 <body>
     <script src="https://js.puter.com/v2/"></script>
     <script>
-        puter.ai.chat("Explain quantum entanglement in simple terms", {
+        puter.ai.chat(input("Input"), {
             model: 'deepseek/deepseek-v3.2'
         }).then(response => {
             puter.print(response.message.content);
