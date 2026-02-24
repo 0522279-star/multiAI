@@ -17,7 +17,6 @@
             align-items: center;
             height: 100vh;
         }
-
         .container {
             width: 100%;
             max-width: 600px;
@@ -30,7 +29,6 @@
             overflow: hidden;
             border: 1px solid #333;
         }
-
         .output-container {
             flex-grow: 1;
             padding: 20px;
@@ -40,7 +38,6 @@
             gap: 10px;
             background-color: #1e1e1e;
         }
-
         .message {
             padding: 10px 15px;
             border-radius: 18px;
@@ -49,20 +46,17 @@
             font-size: 14px;
             line-height: 1.4;
         }
-
         .user-message {
             align-self: flex-end;
             background-color: #007aff;
             color: white;
         }
-
         .ai-message {
             align-self: flex-start;
             background-color: #2d2d2d;
             color: #e0e0e0;
             border: 1px solid #3e3e3e;
         }
-
         .input-area {
             display: flex;
             align-items: center;
@@ -70,7 +64,6 @@
             border-top: 1px solid #333;
             background-color: #252525;
         }
-
         textarea#inputField {
             flex-grow: 1;
             padding: 10px;
@@ -85,11 +78,9 @@
             background-color: #2d2d2d;
             color: #e0e0e0;
         }
-
         textarea#inputField::placeholder {
             color: #888;
         }
-
         button#sendButton {
             margin-left: 10px;
             padding: 10px 20px;
@@ -100,11 +91,9 @@
             cursor: pointer;
             font-weight: 600;
         }
-
         button#sendButton:hover {
             background-color: #005bbd;
         }
-
         .loading {
             border: 4px solid rgba(0, 0, 0, 0.1);
             border-top: 4px solid #007aff;
@@ -115,65 +104,88 @@
             margin-right: 10px;
             display: none;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         /* Scrollbar styling */
         .output-container::-webkit-scrollbar {
             width: 8px;
         }
-
         .output-container::-webkit-scrollbar-track {
             background: #1e1e1e;
         }
-
         .output-container::-webkit-scrollbar-thumb {
             background: #3e3e3e;
             border-radius: 4px;
         }
-
         /* Model selector */
         .model-selector {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             padding: 10px;
             background-color: #252525;
             border-bottom: 1px solid #333;
         }
-
-        select#modelSelect {
-            padding: 8px 12px;
-            border-radius: 18px;
+        .model-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 5px;
+            padding: 8px;
+            border-radius: 12px;
+            cursor: pointer;
             border: 1px solid #3e3e3e;
             background-color: #2d2d2d;
-            color: #e0e0e0;
-            font-family: inherit;
-            font-size: 14px;
-            outline: none;
-            width: 100%;
-            max-width: 300px;
+            transition: background-color 0.2s, border-color 0.2s;
         }
-
-        select#modelSelect option {
-            background-color: #2d2d2d;
+        .model-item:hover {
+            background-color: #3e3e3e;
+        }
+        .model-item.selected {
+            border-color: #007aff;
+            background-color: #005bbd;
+        }
+        .model-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+        .model-name {
+            font-size: 12px;
             color: #e0e0e0;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="model-selector">
-            <select id="modelSelect">
-                <option value="gpt-5-nano">ChatGPT (gpt-5-nano)</option>
-                <option value="claude-sonnet-4-6">Claude (claude-sonnet-4-6)</option>
-                <option value="gemini-3-flash-preview">Gemini (gemini-3-flash-preview)</option>
-                <option value="tngtech/deepseek-r1t2-chimera">DeepSeek (tngtech/deepseek-r1t2-chimera)</option>
-                <option value="x-ai/grok-4-1-fast">Grok (x-ai/grok-4-1-fast)</option>
-                <option value="mistral-8x22b">Mistral (mistral-8x22b)</option>
-            </select>
+            <div class="model-item" data-model="gpt-5-nano">
+                <img class="model-icon" src="https://cdn.sologo.ai/2025/0102/20250102113948245.png" alt="ChatGPT">
+                <span class="model-name">ChatGPT</span>
+            </div>
+            <div class="model-item" data-model="claude-sonnet-4-6">
+                <img class="model-icon" src="https://thumbs.dreamstime.com/z/claude-ai-app-icon-spotlighted-black-background-d-symbol-shape-copy-space-illustration-319386593.jpg" alt="Claude">
+                <span class="model-name">Claude</span>
+            </div>
+            <div class="model-item" data-model="gemini-3-flash-preview">
+                <img class="model-icon" src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/7cf51e188450701.65b6d6991d38d.png" alt="Gemini">
+                <span class="model-name">Gemini</span>
+            </div>
+            <div class="model-item" data-model="tngtech/deepseek-r1t2-chimera">
+                <img class="model-icon" src="https://cdn.vectorstock.com/i/1000v/03/29/deepseek-logo-displayed-on-black-mesh-background-vector-55180329.jpg" alt="DeepSeek">
+                <span class="model-name">DeepSeek</span>
+            </div>
+            <div class="model-item" data-model="x-ai/grok-4-1-fast">
+                <img class="model-icon" src="https://www.malwarebytes.com/wp-content/uploads/sites/2/2024/08/Grok_logo.jpg" alt="Grok">
+                <span class="model-name">Grok</span>
+            </div>
+            <div class="model-item" data-model="mistral-8x22b">
+                <img class="model-icon" src="https://www.findarticles.com/wp-content/uploads/2025/10/mistral_ai_the_european_openai_rival_explained_edited_1761865536.png" alt="Mistral">
+                <span class="model-name">Mistral</span>
+            </div>
         </div>
         <div class="output-container" id="outputContainer">
             <!-- Output messages will appear here -->
@@ -184,26 +196,32 @@
             <button id="sendButton">Send</button>
         </div>
     </div>
-
     <script>
         const inputField = document.getElementById('inputField');
         const loadingCircle = document.getElementById('loadingCircle');
         const outputContainer = document.getElementById('outputContainer');
         const sendButton = document.getElementById('sendButton');
-        const modelSelect = document.getElementById('modelSelect');
-
         // Keep track of conversation history
         let conversationHistory = [];
-
+        let selectedModel = 'gpt-5-nano'; // Default model
+        const modelItems = document.querySelectorAll('.model-item');
+        // Set up model selection
+        modelItems.forEach(item => {
+            item.addEventListener('click', () => {
+                modelItems.forEach(i => i.classList.remove('selected'));
+                item.classList.add('selected');
+                selectedModel = item.dataset.model;
+            });
+        });
+        // Preselect default
+        document.querySelector(`.model-item[data-model="${selectedModel}"]`).classList.add('selected');
         // Auto-resize textarea
         inputField.addEventListener('input', () => {
             inputField.style.height = 'auto';
             inputField.style.height = inputField.scrollHeight + 'px';
         });
-
         // Send message on button click
         sendButton.addEventListener('click', sendMessage);
-
         // Send message on Enter key
         inputField.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -211,7 +229,6 @@
                 sendMessage();
             }
         });
-
         async function sendMessage() {
             const messageText = inputField.value.trim();
             if (messageText) {
@@ -219,31 +236,25 @@
                 inputField.value = '';
                 inputField.style.height = 'auto';
                 showLoading();
-
                 // Add user message to history
                 conversationHistory.push({
                     role: "user",
                     content: messageText
                 });
-
                 try {
-                    const selectedModel = modelSelect.value;
                     const response = await puter.ai.chat(conversationHistory, {
                         model: selectedModel
                     });
-
                     // Extract content, handling possible array format for models like Claude
                     let aiContent = response.message.content;
                     if (Array.isArray(aiContent)) {
                         aiContent = aiContent.map(block => block.text || '').join('\n');
                     }
-
                     // Add AI's response to history
                     conversationHistory.push({
                         role: "assistant",
                         content: aiContent
                     });
-
                     hideLoading();
                     addMessage(aiContent, 'ai-message');
                 } catch (error) {
@@ -252,15 +263,12 @@
                 }
             }
         }
-
         function showLoading() {
             loadingCircle.style.display = 'block';
         }
-
         function hideLoading() {
             loadingCircle.style.display = 'none';
         }
-
         function addMessage(text, type) {
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message', type);
