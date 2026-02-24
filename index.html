@@ -192,6 +192,9 @@
         const sendButton = document.getElementById('sendButton');
         const modelSelect = document.getElementById('modelSelect');
 
+        // Keep track of conversation history
+        let conversationHistory = [];
+
         // Auto-resize textarea
         inputField.addEventListener('input', () => {
             inputField.style.height = 'auto';
@@ -209,7 +212,7 @@
             }
         });
 
-        function sendMessage() {
+        async function sendMessage() {
             const messageText = inputField.value.trim();
             if (messageText) {
                 addMessage(messageText, 'user-message');
@@ -217,17 +220,30 @@
                 inputField.style.height = 'auto';
                 showLoading();
 
-                const selectedModel = modelSelect.value;
+                // Add user message to history
+                conversationHistory.push({
+                    role: "user",
+                    content: messageText
+                });
 
-                puter.ai.chat(messageText, {
-                    model: selectedModel
-                }).then(response => {
+                try {
+                    const selectedModel = modelSelect.value;
+                    const response = await puter.ai.chat(conversationHistory, {
+                        model: selectedModel
+                    });
+
+                    // Add AI's response to history
+                    conversationHistory.push({
+                        role: "assistant",
+                        content: response.message.content
+                    });
+
                     hideLoading();
                     addMessage(response.message.content, 'ai-message');
-                }).catch(error => {
+                } catch (error) {
                     hideLoading();
                     addMessage("Sorry, something went wrong. Please try again.", 'ai-message');
-                });
+                }
             }
         }
 
