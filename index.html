@@ -11,7 +11,7 @@
             if (!userInput) return;
 
             puter.ai.chat(userInput, {
-                model: 'deepseek/deepseek-v3.2'
+                model: 'gemini-3-flash-preview'
             }).then(response => {
                 document.getElementById('response').innerHTML = response.message.content;
             });
