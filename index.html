@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist AI Chat</title>
+    <title>Minimalist AI Chat (Dark)</title>
     <script src="https://js.puter.com/v2/"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f7f7f7;
+            background-color: #121212;
+            color: #f0f0f0;
             margin: 0;
             padding: 0;
             display: flex;
@@ -20,13 +21,14 @@
         .container {
             width: 100%;
             max-width: 600px;
-            background-color: #fff;
+            background-color: #1e1e1e;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             height: 80vh;
             overflow: hidden;
+            border: 1px solid #333;
         }
 
         .output-container {
@@ -36,6 +38,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            background-color: #1e1e1e;
         }
 
         .message {
@@ -43,6 +46,8 @@
             border-radius: 18px;
             max-width: 80%;
             word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.4;
         }
 
         .user-message {
@@ -53,22 +58,23 @@
 
         .ai-message {
             align-self: flex-start;
-            background-color: #e5e5ea;
-            color: #333;
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border: 1px solid #3e3e3e;
         }
 
         .input-area {
             display: flex;
             align-items: center;
             padding: 10px 15px;
-            border-top: 1px solid #eee;
-            background-color: #fff;
+            border-top: 1px solid #333;
+            background-color: #252525;
         }
 
         textarea#inputField {
             flex-grow: 1;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #3e3e3e;
             border-radius: 18px;
             resize: none;
             outline: none;
@@ -76,6 +82,12 @@
             font-size: 14px;
             min-height: 20px;
             max-height: 100px;
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+        }
+
+        textarea#inputField::placeholder {
+            color: #888;
         }
 
         button#sendButton {
@@ -107,6 +119,20 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar styling */
+        .output-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .output-container::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        .output-container::-webkit-scrollbar-thumb {
+            background: #3e3e3e;
+            border-radius: 4px;
         }
     </style>
 </head>
