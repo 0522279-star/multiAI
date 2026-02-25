@@ -31,27 +31,6 @@
             height: 80vh;
             overflow: hidden;
             border: 1px solid #333;
-            position: relative;
-        }
-        #leaveButton {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 100;
-            width: 30px;
-            height: 30px;
-            background: #007aff;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #leaveButton:hover {
-            background: #005bbd;
         }
         .output-container {
             flex-grow: 1;
@@ -84,7 +63,7 @@
             max-width: 80%;
         }
         .ai-message h1, .ai-message h2, .ai-message h3, .ai-message h4, .ai-message h5, .ai-message h6 {
-            color: #007aff;
+            color: #e0e0e0;
             margin-top: 10px;
             margin-bottom: 5px;
         }
@@ -240,7 +219,6 @@
 </head>
 <body>
     <div class="container">
-        <button id="leaveButton"><img src="https://png.pngtree.com/png-clipart/20190903/original/pngtree-black-exit-icon-png-image_4421937.jpg"style=" width: 20px; height: 20px;></button>
         <div class="model-selector">
             <div class="model-item" data-model="openai/gpt-5.2-pro">
                 <img class="model-icon" src="https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/openai.png" alt="ChatGPT">
@@ -272,10 +250,10 @@
                 <span class="model-name">Mistral</span>
                 <span class="model-subtitle">Large 3</span>
             </div>
-            <div class="model-item" data-model="google/gemini-3-pro-image-preview">
-                <img class="model-icon" src="https://res.cloudinary.com/apideck/image/upload/v1629253240/icons/openai-codex.png">
-                <span class="model-name">Nanobanana</span>
-                <span class="model-subtitle">pro 3</span>
+            <div class="model-item" data-model="openai/gpt-5.3-codex">
+                <img class="model-icon" src="https://img.utdstc.com/icon/b9e/a41/b9ea419dbb6ea4bfc9a9327992db197f95fa59f720a98b7ce072c107926242c0:200">
+                <span class="model-name">Codex</span>
+                <span class="model-subtitle">5.3</span>
             </div>
         </div>
         <div class="output-container" id="outputContainer"></div>
@@ -355,7 +333,10 @@
             messageDiv.classList.add('message', type);
             if (type === 'ai-message') {
                 const htmlContent = marked.parse(text);
-                const cleanHtml = DOMPurify.sanitize(htmlContent);
+                const cleanHtml = DOMPurify.sanitize(htmlContent, {
+                    ADD_TAGS: ['img'],
+                    ADD_ATTR: ['src', 'alt', 'title', 'width', 'height']
+                });
                 messageDiv.innerHTML = cleanHtml;
             } else {
                 messageDiv.textContent = text;
@@ -363,15 +344,6 @@
             outputContainer.appendChild(messageDiv);
             outputContainer.scrollTop = outputContainer.scrollHeight;
         }
-
-        // Your custom image button logic
-        document.getElementById('leaveButton').addEventListener('click', function() {
-            // Replace this with your custom JS logic
-            console.log("puter.auth.signOut()");
-            // Example: change an image or run any JS you want
-            // document.getElementById('someImage').src = 'new-image-url.jpg';
-            // location.reload();
-        });
     </script>
 </body>
 </html>
